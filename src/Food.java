@@ -1,33 +1,26 @@
 import java.time.LocalDate;
 
-//Food: expiryDate
-public class Food implements Product{
-    private final String name;
-    private final Double price;
+//Food: expiryDate (must be today or in the future)
+public class Food extends Product{
+
     private final LocalDate expiryDate;
 
-    public Food(String name, Double price, LocalDate expiryDate) {
-        if(name == null || name.isBlank() ){
-            throw new IllegalArgumentException("Name cannot be null or blank");
+    public Food(String name, LocalDate expiryDate, double price) {
+        super(name, price);
+        if (expiryDate == null) {
+            throw new IllegalArgumentException("expiryDate must not be null");
         }
-        if(price.isInfinite() || price.isNaN() || price < 0.0){
-            throw new IllegalArgumentException("Price cannot be negative");
+        if (expiryDate.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("expiryDate must be today or in the future");
         }
-        if(expiryDate.isBefore(LocalDate.now())){
-            throw new IllegalArgumentException("Expiry Date cannot be after now");
-        }
-        this.name = name;
-        this.price = price;
         this.expiryDate = expiryDate;
     }
 
-    @Override
-    public String getName() {
-        return name;
-    }
+    public LocalDate getExpiryDate() { return expiryDate; }
 
     @Override
-    public Double getPrice() {
-        return price;
+    public String toString() {
+        return super.toString() + " [expiryDate=" + expiryDate + "]";
     }
+
 }
